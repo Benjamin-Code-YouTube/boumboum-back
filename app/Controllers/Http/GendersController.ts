@@ -9,7 +9,7 @@ export default class GendersController {
       return response.json({
         status: true,
         data: genders,
-        message: "Successfully fetcehd genders",
+        message: "Successfully fetched genders",
       });
     } catch (err) {
       return response.json({
