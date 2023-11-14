@@ -3,7 +3,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 import User from "App/Models/User";
 import Match from "App/Models/Match";
-import CreateMatchValidator from "App/Validaors/CreateMatchValidator";
+import CreateMatchValidator from "App/Validators/CreateMatchValidator";
 
 export default class MatchesController {
   //retrive list of user's based on there gender preference
