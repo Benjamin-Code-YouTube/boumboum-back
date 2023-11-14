@@ -55,8 +55,6 @@ export default class SpotifyService {
 
         //store artists genres
         await newArtist.related("genres").saveMany(artist.genres);
-
-        // await newArtist.save()
       }
       return {
         status: true,
@@ -111,26 +109,11 @@ export default class SpotifyService {
 
   public static getTracksData(tracks) {
     const mappdTracks = tracks?.map((track) => {
-      // const artists = track?.artists?.map((artist) => {
-      //   return {
-      //     // userId: userId,
-      //     name: artist.name,
-      //     popularity: artist.popularity,
-      //     uri: artist.uri,
-      //     followers: artist?.followers?.total,
-      //     // genres: artist?.genres,
-      //     // image: artist?.images[0]?.url,
-      //     // type: "track",
-      //   };
-      // });
       return {
-        // image: track?.preview_url,
-        // uri: track.uri,
         popularity: track.popularity,
         name: track.name,
         trackId: track.id,
         album: track?.albun?.name,
-        // artists: artists,
       };
     });
 
