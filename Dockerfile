@@ -1,31 +1,32 @@
-FROM node:20-alpine3.16 as builder
+FROM node:20-alpine3.18 as base
 
+RUN apk --no-cache add curl
+
+# All deps stage
+FROM base as deps
 WORKDIR /app
-
-COPY package.json package-lock.json ./
-
+ADD package.json package-lock.json ./
 RUN npm ci
 
-COPY . .
+# Production only deps stage
+FROM base as production-deps
+WORKDIR /app
+ADD package.json package-lock.json ./
+RUN npm ci --omit=dev
+RUN wget https://gobinaries.com/tj/node-prune --output-document - | /bin/sh && node-prune
 
+# Build stage
+FROM base as build
+WORKDIR /app
+COPY --from=deps /app/node_modules /app/node_modules
+ADD . .
 RUN node ace build --production --ignore-ts-errors
 
-COPY package-lock.json ./build
-
-RUN cd build \
-  && npm ci --omit="dev"
-
-FROM node:20-alpine3.16
-
-ARG APP_RELEASE
-
-ENV APP_RELEASE=${APP_RELEASE}
-ENV HOST=0.0.0.0
-ENV PORT=8080
-
+# Production stage
+FROM base
+ENV NODE_ENV=production
 WORKDIR /app
-
-COPY --from=builder /app/build .
-
+COPY --from=production-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build /app
 EXPOSE 8080
-CMD ["node", "server.js"]
+CMD ["node", "./bin/server.js"]

@@ -14,7 +14,7 @@ export default class Profile extends BaseModel {
 
   @column()
   public dateOfBirth: Date
-w
+  
   @column()
   public description: String
   

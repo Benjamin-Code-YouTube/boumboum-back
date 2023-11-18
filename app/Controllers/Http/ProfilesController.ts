@@ -2,7 +2,7 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
 import Profile from "App/Models/Profile";
 import SpotifyService from "App/Services/SpotifyService";
-import CreateProfileValidator from "App/Validaors/CreateProfileValidator";
+import CreateProfileValidator from "App/Validators/CreateProfileValidator";
 
 export default class ProfilesController {
   public async get({ response, auth }: HttpContextContract) {
