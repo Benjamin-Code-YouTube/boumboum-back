@@ -12,8 +12,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('artist_id')
         .unsigned()
-        .references('id')
-        .inTable('artists')
+
 
       table.string('name')
 

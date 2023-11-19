@@ -12,15 +12,13 @@ export default class extends BaseSchema {
       table.string('avatar')
       table.integer('prefered_gender_id')
         .unsigned()
-        .references('id')
-        .inTable('genders')
-      
+
+
       table.integer('user_id')
         .unsigned()
-        .references('id')
-        .inTable('users')
-      
-        
+
+
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
