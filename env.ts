@@ -29,5 +29,6 @@ export default Env.rules({
 	MYSQL_DB_NAME: Env.schema.string(),
 	SPOTIFY_CLIENT_ID: Env.schema.string(),
 	SPOTIFY_CLIENT_SECRET: Env.schema.string(),
+  SPOTIFY_CALLBACK_URL: Env.schema.string.optional(),
 	SESSION_DRIVER: Env.schema.string()
 })
