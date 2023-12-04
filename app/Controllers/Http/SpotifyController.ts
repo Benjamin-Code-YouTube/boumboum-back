@@ -1,7 +1,7 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import SpotifyService from "App/Services/SpotifyService";
 
-export default class SpotifiesController {
+export default class SpotifyController {
   public async artists({ response, auth }: HttpContextContract) {
     try {
       const userId = auth.user?.id;
@@ -36,33 +36,32 @@ export default class SpotifiesController {
     }
   }
 
-  public async trackByName({request, response, auth}: HttpContextContract) {
+  public async trackByName({ request, response, auth }: HttpContextContract) {
     try {
       const userId = auth.user?.id;
-      const { name } = request.qs()
+      const { name } = request.qs();
 
-      const tracks = await SpotifyService.getTracksByName(userId, name)
-      
+      const tracks = await SpotifyService.getTracksByName(userId, name);
+
       const mappedTracks = tracks?.map((track) => {
-        return  {
+        return {
           uri: track.uri,
           popularity: track.popularity,
           name: track.name,
           trackId: track.id,
           album: track?.album?.name,
-        }
-      }) 
+        };
+      });
 
       return response.json({
         status: true,
-        data: mappedTracks
-      })
-    } catch(err) {
+        data: mappedTracks,
+      });
+    } catch (err) {
       return response.json({
         status: false,
-        message: "Error fetching track's"
-      })
+        message: "Error fetching track's",
+      });
     }
   }
-  
 }
