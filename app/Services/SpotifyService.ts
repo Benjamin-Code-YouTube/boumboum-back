@@ -24,7 +24,7 @@ export default class SpotifyService {
     const SPOTIFY_URL = Env.get("SPOTIFY_URL");
     const social = await SocialToken.query().where("user_id", userId).first();
     const resp = await Axios.get(
-      `${SPOTIFY_URL}/me/top/tracks?time_range=long_term`,
+      `${SPOTIFY_URL}/me/top/tracks?time_range=medium_term&limit=5`,
       {
         headers: {
           Authorization: `Bearer ${social?.token}`,
