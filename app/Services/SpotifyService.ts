@@ -79,6 +79,7 @@ export default class SpotifyService {
         newTrack.name = track.name;
         newTrack.trackId = track.id;
         newTrack.album = track?.album?.name;
+        newTrack.trackImage = track?.album?.images[0]?.url ?? null;
         await newTrack.save();
       }
       return {

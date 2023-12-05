@@ -26,7 +26,7 @@ export default class Track extends BaseModel {
 
   
   @column()
-  public tractImage: String
+  public trackImage: String
   
   @column()
   public trackId: String

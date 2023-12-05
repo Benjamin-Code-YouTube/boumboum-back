@@ -12,7 +12,7 @@ export default class extends BaseSchema {
       table.string("name");
       table.string("uri");
       table.string("popularity");
-      table.string("tract_image");
+      table.string("track_image");
       table.string("track_id");
       table.string("album");
       table.tinyint('favorite').defaultTo(0)
