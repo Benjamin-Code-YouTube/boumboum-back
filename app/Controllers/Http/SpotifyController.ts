@@ -1,7 +1,7 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import SpotifyService from "App/Services/SpotifyService";
 
-export default class SpotifiesController {
+export default class SpotifyController {
   public async artists({ response, auth }: HttpContextContract) {
     try {
       const userId = auth.user?.id;
@@ -42,7 +42,7 @@ export default class SpotifiesController {
       const { name } = request.qs()
 
       const tracks = await SpotifyService.getTracksByName(userId, name)
-      
+
       const mappedTracks = tracks?.map((track) => {
         return  {
           uri: track.uri,
@@ -51,7 +51,7 @@ export default class SpotifiesController {
           trackId: track.id,
           album: track?.album?.name,
         }
-      }) 
+      })
 
       return response.json({
         status: true,
@@ -64,5 +64,5 @@ export default class SpotifiesController {
       })
     }
   }
-  
+
 }

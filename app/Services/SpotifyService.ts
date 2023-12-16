@@ -4,14 +4,33 @@ import Artist from "App/Models/Artist";
 import Genre from "App/Models/Genre";
 import SocialToken from "App/Models/SocialToken";
 import Track from "App/Models/Track";
-import Axios from "axios";
+import axios from "axios";
+import * as console from "console";
+import UnAuthorizedException from "App/Exceptions/UnAuthorizedException";
+import TechnicalException from "App/Exceptions/TechnicalException";
+
+const axiosInstance = axios.create({
+  baseURL: Env.get("SPOTIFY_URL"),
+  timeout: 1000,
+})
+axiosInstance.interceptors.response.use(
+  response => {
+    // Any status code that lies within the range of 2xx causes this function to trigger
+    return response;
+  },
+  error => {
+    if (error.response.status === 401) {
+      throw new UnAuthorizedException()
+    }
+    throw new TechnicalException()
+  },
+);
 
 export default class SpotifyService {
   public static async getArtists(userId) {
-    const SPOTIFY_URL = Env.get("SPOTIFY_URL");
     const social = await SocialToken.query().where("user_id", userId).first();
 
-    const resp = await Axios.get(`${SPOTIFY_URL}/me/top/artists`, {
+    const resp = await axiosInstance.get('/me/top/artists', {
       headers: {
         Authorization: `Bearer ${social?.token}`,
       },
@@ -21,10 +40,9 @@ export default class SpotifyService {
   }
 
   public static async getTracks(userId) {
-    const SPOTIFY_URL = Env.get("SPOTIFY_URL");
     const social = await SocialToken.query().where("user_id", userId).first();
-    const resp = await Axios.get(
-      `${SPOTIFY_URL}/me/top/tracks?time_range=medium_term&limit=5`,
+    const resp = await axiosInstance.get(
+      '/me/top/tracks?time_range=medium_term&limit=5',
       {
         headers: {
           Authorization: `Bearer ${social?.token}`,
@@ -92,12 +110,10 @@ export default class SpotifyService {
   }
 
   public static async getTracksByIds(userId, trackIds) {
-    const SPOTIFY_URL = Env.get("SPOTIFY_URL");
-
     const commaSeparatedIds = trackIds.join(",");
     const social = await SocialToken.query().where("user_id", userId).first();
-    const resp = await Axios.get(
-      `${SPOTIFY_URL}/tracks?ids=${commaSeparatedIds}`,
+    const resp = await axiosInstance.get(
+      `/tracks?ids=${commaSeparatedIds}`,
       {
         headers: {
           Authorization: `Bearer ${social?.token}`,
@@ -141,10 +157,9 @@ export default class SpotifyService {
   }
 
   public static async getTracksByName(userId, name) {
-    const SPOTIFY_URL = Env.get("SPOTIFY_URL");
     const social = await SocialToken.query().where("user_id", userId).first();
-    const resp = await Axios.get(
-      `${SPOTIFY_URL}/search?q=track:${name}&type=track`,
+    const resp = await axiosInstance.get(
+      `/search?q=track:${name}&type=track`,
       {
         headers: {
           Authorization: `Bearer ${social?.token}`,

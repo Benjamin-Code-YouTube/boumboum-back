@@ -30,6 +30,8 @@ Route.group(() => {
   // SIGN IN ROUTES
   Route.get("/signin", "UsersController.redirect");
 
+  Route.get("/signin-success", "UsersController.success");
+
   //OAuth CALLBACK
   Route.get("/signin-callback", "UsersController.handleCallback");
 

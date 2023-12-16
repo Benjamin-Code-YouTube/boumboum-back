@@ -10,6 +10,10 @@ export default class UsersController {
     return ally.use("spotify").stateless().redirect();
   }
 
+  public async success({ response }: HttpContextContract) {
+    return response.json({});
+  }
+
   public async handleCallback({ ally, auth, response }: HttpContextContract) {
     try {
       const spotify = ally.use("spotify").stateless();
@@ -73,7 +77,7 @@ export default class UsersController {
       socialToken.token = token.token;
       socialToken.refreshToken = token.refreshToken;
       socialToken.type = token.type;
-      socialToken.expiresAt = token.expiresAt?.toString();
+      socialToken.expiresAt = new Date(token.expiresAt.toString()).toISOString().slice(0, 19).replace('T', ' ');
 
       await socialToken.save();
       /* Save Social Token */
@@ -108,8 +112,10 @@ export default class UsersController {
         expiresIn: "90 mins",
       });
 
-      response.json({ /* newUser, */ userToken /* , socialToken */ });
+      response.redirect(`/api/signin-success?userToken=${encodeURIComponent(userToken.token)}`);
+      // response.json({ /* newUser, */ userToken /* , socialToken */ });
     } catch (err) {
+      console.log(err);
       response.json({
         status: false,
         message: "Something went wrong.",
