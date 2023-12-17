@@ -5,9 +5,11 @@
  * file.
  */
 
-import Env from '@ioc:Adonis/Core/Env'
-import { AllyConfig } from '@ioc:Adonis/Addons/Ally'
+import {AllyConfig} from '@ioc:Adonis/Addons/Ally'
+import ConfigurationService from "App/Services/ConfigurationService";
 
+
+const SPOTIFY_CONFIG = ConfigurationService.getSpotifyConfig()
 /*
 |--------------------------------------------------------------------------
 | Ally Config
@@ -25,10 +27,10 @@ const allyConfig: AllyConfig = {
   */
   spotify: {
     driver: 'spotify',
-    clientId: Env.get('SPOTIFY_CLIENT_ID'),
-    clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
-    callbackUrl: Env.get('SPOTIFY_CALLBACK_URL', 'http://localhost:3333/api/signin-callback'),
-    scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
+    clientId: SPOTIFY_CONFIG.clientId,
+    clientSecret: SPOTIFY_CONFIG.clientSecret,
+    callbackUrl: SPOTIFY_CONFIG.callbackUrl,
+    scopes: SPOTIFY_CONFIG.scope,
     showDialog: false
   },
 }

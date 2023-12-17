@@ -7,10 +7,11 @@
 
 import proxyAddr from 'proxy-addr'
 import Env from '@ioc:Adonis/Core/Env'
-import type { ServerConfig } from '@ioc:Adonis/Core/Server'
-import type { LoggerConfig } from '@ioc:Adonis/Core/Logger'
-import type { ProfilerConfig } from '@ioc:Adonis/Core/Profiler'
-import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
+import type {ServerConfig} from '@ioc:Adonis/Core/Server'
+import type {LoggerConfig} from '@ioc:Adonis/Core/Logger'
+import type {ProfilerConfig} from '@ioc:Adonis/Core/Profiler'
+import type {ValidatorConfig} from '@ioc:Adonis/Core/Validator'
+import ConfigurationService from "App/Services/ConfigurationService";
 
 /*
 |--------------------------------------------------------------------------
@@ -180,7 +181,7 @@ export const logger: LoggerConfig = {
   | can have huge impact on performance.
   |
   */
-  prettyPrint: Env.get('NODE_ENV') === 'development',
+  prettyPrint: ConfigurationService.isServerInDevMode(),
 }
 
 /*
@@ -231,5 +232,4 @@ export const profiler: ProfilerConfig = {
 | to the default config https://git.io/JT0WE
 |
 */
-export const validator: ValidatorConfig = {
-}
+export const validator: ValidatorConfig = {}

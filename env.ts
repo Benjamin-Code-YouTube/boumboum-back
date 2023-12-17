@@ -13,22 +13,25 @@
 */
 
 import Env from '@ioc:Adonis/Core/Env'
+import {DatabaseConnection, DriveDisk, HashDriverName, NodeEnv, SessionDriver} from "App/Services/ConfigurationService";
 
 export default Env.rules({
-	HOST: Env.schema.string({ format: 'host' }),
-	PORT: Env.schema.number(),
-	APP_KEY: Env.schema.string(),
-	APP_NAME: Env.schema.string(),
-  DRIVE_DISK: Env.schema.enum(['local'] as const),
-	NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
-	DB_CONNECTION: Env.schema.string(),
-	MYSQL_HOST: Env.schema.string({ format: 'host' }),
-	MYSQL_PORT: Env.schema.number(),
-	MYSQL_USER: Env.schema.string(),
-	MYSQL_PASSWORD: Env.schema.string.optional(),
-	MYSQL_DB_NAME: Env.schema.string(),
-	SPOTIFY_CLIENT_ID: Env.schema.string(),
-	SPOTIFY_CLIENT_SECRET: Env.schema.string(),
+  HOST: Env.schema.string({format: 'host'}),
+  APP_KEY: Env.schema.string(),
+  APP_NAME: Env.schema.string(),
+  PORT: Env.schema.number(),
+  DATABASE_HOST: Env.schema.string.optional({format: 'host'}),
+  DATABASE_NAME: Env.schema.string.optional(),
+  DATABASE_PASSWORD: Env.schema.string.optional(),
+  DATABASE_PORT: Env.schema.number.optional(),
+  DATABASE_USER: Env.schema.string.optional(),
+  DB_CONNECTION: Env.schema.enum.optional(Object.values(DatabaseConnection)),
+  DRIVE_DISK: Env.schema.enum.optional(Object.values(DriveDisk)),
+  NODE_ENV: Env.schema.enum.optional(Object.values(NodeEnv)),
+  SESSION_DRIVER: Env.schema.enum.optional(Object.values(SessionDriver)),
+  SPOTIFY_API_URL: Env.schema.string.optional(),
+  SPOTIFY_CLIENT_ID: Env.schema.string(),
+  SPOTIFY_CLIENT_SECRET: Env.schema.string(),
   SPOTIFY_CALLBACK_URL: Env.schema.string.optional(),
-	SESSION_DRIVER: Env.schema.string()
+  HASH_DRIVER: Env.schema.enum.optional(Object.values(HashDriverName))
 })

@@ -5,8 +5,8 @@
  * file.
  */
 
-import Env from '@ioc:Adonis/Core/Env'
-import { hashConfig } from '@adonisjs/core/build/config'
+import {hashConfig} from '@adonisjs/core/build/config'
+import ConfigurationService, {HashDriverName} from "App/Services/ConfigurationService";
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ export default hashConfig({
   | free to change the default value
   |
   */
-  default: Env.get('HASH_DRIVER', 'scrypt'),
+  default: ConfigurationService.getHashDriverName(),
 
   list: {
     /*
@@ -43,7 +43,7 @@ export default hashConfig({
     | https://nodejs.org/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback
     |
     */
-    scrypt: {
+    [HashDriverName.SCRYPT]: {
       driver: 'scrypt',
       cost: 16384,
       blockSize: 8,
@@ -66,7 +66,7 @@ export default hashConfig({
     | npm install phc-argon2
     |
     */
-    argon: {
+    [HashDriverName.ARGON]: {
       driver: 'argon2',
       variant: 'id',
       iterations: 3,
@@ -88,7 +88,7 @@ export default hashConfig({
     | npm install phc-bcrypt
     |
     */
-    bcrypt: {
+    [HashDriverName.BCRYPT]: {
       driver: 'bcrypt',
       rounds: 10,
     },

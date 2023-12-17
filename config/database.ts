@@ -5,8 +5,10 @@
  * file.
  */
 
-import Env from '@ioc:Adonis/Core/Env'
-import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
+import type {DatabaseConfig} from '@ioc:Adonis/Lucid/Database'
+import ConfigurationService, {DatabaseConfiguration} from "App/Services/ConfigurationService";
+
+const DATABASE_CONFIG: DatabaseConfiguration = ConfigurationService.getDatabaseConfig()
 
 const databaseConfig: DatabaseConfig = {
   /*
@@ -19,7 +21,7 @@ const databaseConfig: DatabaseConfig = {
   | file.
   |
   */
-  connection: Env.get('DB_CONNECTION'),
+  connection: DATABASE_CONFIG.connection,
 
   connections: {
     /*
@@ -36,11 +38,11 @@ const databaseConfig: DatabaseConfig = {
     mysql: {
       client: 'mysql2',
       connection: {
-        host: Env.get('MYSQL_HOST'),
-        port: Env.get('MYSQL_PORT'),
-        user: Env.get('MYSQL_USER'),
-        password: Env.get('MYSQL_PASSWORD', ''),
-        database: Env.get('MYSQL_DB_NAME'),
+        host: DATABASE_CONFIG.host,
+        port: DATABASE_CONFIG.port,
+        user: DATABASE_CONFIG.user,
+        password: DATABASE_CONFIG.password,
+        database: DATABASE_CONFIG.name,
       },
       migrations: {
         naturalSort: true,

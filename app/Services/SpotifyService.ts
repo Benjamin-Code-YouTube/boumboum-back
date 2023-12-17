@@ -1,5 +1,3 @@
-import Env from "@ioc:Adonis/Core/Env";
-
 import Artist from "App/Models/Artist";
 import Genre from "App/Models/Genre";
 import SocialToken from "App/Models/SocialToken";
@@ -8,9 +6,10 @@ import axios from "axios";
 import * as console from "console";
 import UnAuthorizedException from "App/Exceptions/UnAuthorizedException";
 import TechnicalException from "App/Exceptions/TechnicalException";
+import ConfigurationService from "App/Services/ConfigurationService";
 
 const axiosInstance = axios.create({
-  baseURL: Env.get("SPOTIFY_URL"),
+  baseURL: ConfigurationService.getSpotifyApiUrl(),
   timeout: 1000,
 })
 axiosInstance.interceptors.response.use(
