@@ -1,13 +1,15 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import { schema } from '@ioc:Adonis/Core/Validator'
+import type {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 
 import User from "App/Models/User";
 import Match from "App/Models/Match";
 import CreateMatchValidator from "App/Validators/CreateMatchValidator";
 
 export default class MatchesController {
-  //retrive list of user's based on there gender preference
-  public async get({ response, auth }: HttpContextContract) {
+
+  /* potential matches */
+
+  // retrieve list of user's based on there gender preference
+  public async get({response, auth}: HttpContextContract) {
     try {
       const userId = auth.user?.id;
       if (!userId) {
@@ -46,7 +48,9 @@ export default class MatchesController {
     }
   }
 
-  public async mutualMatch({ request, response, auth }: HttpContextContract) {
+
+  /* mark match */
+  public async mutualMatch({request, response, auth}: HttpContextContract) {
     try {
       const authId = auth.user?.id;
       if (!authId) {
@@ -55,15 +59,15 @@ export default class MatchesController {
       }
 
       const payload = await request.validate(CreateMatchValidator);
-      const { userId } = payload;
-      if(authId == userId) {
+      const {userId} = payload;
+      if (authId == userId) {
         return response.json({
           message: "Cannot mark youself as match."
         })
       }
 
       const userExist = await User.query().where("id", userId).first();
-      if(!userExist) {
+      if (!userExist) {
         return response.json({
           message: "User not found."
         })
@@ -112,7 +116,9 @@ export default class MatchesController {
       });
     }
   }
-  public async history({ response, auth }: HttpContextContract) {
+
+  /* get mutual match history */
+  public async history({response, auth}: HttpContextContract) {
     try {
       const authId = auth.user?.id;
       if (!authId) {

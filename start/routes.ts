@@ -19,36 +19,31 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
+import AuthMiddleware from "App/Middleware/Auth";
 
 Route.get('health', ({ response }) => response.noContent())
 
 Route.group(() => {
-  Route.get("/", async ({ response }) => {
-    return response.json("Working.");
-  });
 
-  // SIGN IN ROUTES
-  Route.get("/signin", "UsersController.redirect");
-
-  Route.get("/signin-success", "UsersController.success");
-
-  //OAuth CALLBACK
-  Route.get("/signin-callback", "UsersController.handleCallback");
-
-  Route.post("/logout", "UsersController.logout");
+  Route.group(() => {
+    Route.get("/spotify", "AuthSpotifyController.authorize");
+    Route.post("/spotify/callback", "AuthSpotifyController.callback");
+    Route.post("/success", "AuthController.success");
+    Route.post("/logout", "AuthController.logout");
+  }).prefix(AuthMiddleware.buildMiddlewareName())
 
   Route.group(() => {
     Route.get("/", "ProfilesController.get");
     Route.post("/", "ProfilesController.store");
   })
   .prefix("profile")
-  .middleware("auth:api");
+  .middleware(AuthMiddleware.buildMiddlewareName("api"));
 
   Route.group(() => {
     Route.get("/", "GendersController.index");
   })
   .prefix("genders")
-  .middleware("auth:api");
+  .middleware(AuthMiddleware.buildMiddlewareName("api"));
 
   Route.group(() => {
     Route.get("/artists", "SpotifyController.artists");
@@ -56,19 +51,14 @@ Route.group(() => {
     Route.get("/track-by-name", "SpotifyController.trackByName");
   })
   .prefix("spotify")
-  .middleware("auth:api");
+  .middleware(AuthMiddleware.buildMiddlewareName("api"));
 
   Route.group(() => {
-    /* potential matches */
     Route.get("/", "MatchesController.get");
-
-    /* mark match */
     Route.post("/mutual", "MatchesController.mutualMatch");
-
-    /* get mutual match history */
     Route.get("/history", "MatchesController.history");
   })
   .prefix("matches")
-  .middleware("auth:api");
+  .middleware(AuthMiddleware.buildMiddlewareName("api"));
 
 }).prefix("api");

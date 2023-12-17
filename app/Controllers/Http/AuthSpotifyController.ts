@@ -1,20 +1,16 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import type {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import Artist from "App/Models/Artist";
 import SocialToken from "App/Models/SocialToken";
 import Track from "App/Models/Track";
 import User from "App/Models/User";
 import SpotifyService from "App/Services/SpotifyService";
 
-export default class UsersController {
-  public async redirect({ ally }: HttpContextContract) {
+export default class AuthSpotifyController {
+  public async authorize({ally}: HttpContextContract) {
     return ally.use("spotify").stateless().redirect();
   }
 
-  public async success({ response }: HttpContextContract) {
-    return response.json({});
-  }
-
-  public async handleCallback({ ally, auth, response }: HttpContextContract) {
+  public async callback({ally, auth, response}: HttpContextContract) {
     try {
       const spotify = ally.use("spotify").stateless();
 
@@ -45,7 +41,7 @@ export default class UsersController {
 
       const user = await spotify.user();
 
-      const { token } = user;
+      const {token} = user;
 
       const findUser = {
         email: user.email as string,
@@ -121,12 +117,5 @@ export default class UsersController {
         message: "Something went wrong.",
       });
     }
-  }
-
-  public async logout({ auth, response }: HttpContextContract) {
-    await auth.use("api").revoke();
-    return response.json({
-      revoked: true,
-    });
   }
 }
