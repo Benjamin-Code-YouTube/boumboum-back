@@ -89,10 +89,7 @@ export default class ConfigurationService {
     return {
       clientId: Env.get('SPOTIFY_CLIENT_ID'),
       clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
-      callbackUrl: Env.get('SPOTIFY_CALLBACK_URL', [
-        `http://${SERVER_CONFIG.host}${SERVER_CONFIG.port}`,
-        '/api/signin-callback'
-      ].join('/')),
+      callbackUrl: Env.get('SPOTIFY_CALLBACK_URL', `http://${SERVER_CONFIG.host}:${SERVER_CONFIG.port}/api/auth/spotify/callback`),
       scope: ['user-read-email', 'user-top-read', 'user-follow-read']
     }
   }
