@@ -17,10 +17,12 @@ axiosInstance.interceptors.response.use(
     // Any status code that lies within the range of 2xx causes this function to trigger
     return response;
   },
+  // TODO clean with adonis design pattern
   error => {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       throw new UnAuthorizedException()
     }
+    console.log(error)
     throw new TechnicalException()
   },
 );
