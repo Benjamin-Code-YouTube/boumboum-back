@@ -43,6 +43,7 @@ export default class MatchesController {
       });
     } catch (err) {
       console.log("errrrr", err);
+      throw err
     }
   }
 

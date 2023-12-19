@@ -1,4 +1,4 @@
-import {Exception} from '@adonisjs/core/build/standalone'
+import {HttpException} from "@adonisjs/http-server/build/src/Exceptions/HttpException";
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ import {Exception} from '@adonisjs/core/build/standalone'
 | new UnAuthorizedException('message', 500, 'E_RUNTIME_EXCEPTION')
 |
 */
-export default class UnAuthorizedException extends Exception {
+export default class UnAuthorizedException extends HttpException {
   constructor(message?: string, code?: string) {
     super(message ?? "", 401, code)
   }

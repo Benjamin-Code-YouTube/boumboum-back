@@ -10,6 +10,7 @@ export default class SpotifyController {
       return response.json(savedArtists);
     } catch (err) {
       console.log("err", err);
+      throw err
     }
   }
 
@@ -33,6 +34,7 @@ export default class SpotifyController {
       return response.json(mappdTracks);
     } catch (err) {
       console.log("err", err);
+      throw err
     }
   }
 
