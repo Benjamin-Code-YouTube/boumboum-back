@@ -1,69 +1,61 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import type {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import SpotifyService from "App/Services/SpotifyService";
+import {inject} from "@adonisjs/fold";
 
+@inject()
 export default class SpotifyController {
-  public async artists({ response, auth }: HttpContextContract) {
-    try {
-      const userId = auth.user?.id;
-      const topArtists = await SpotifyService.getArtists(userId);
-      const savedArtists = await SpotifyService.saveArtists(userId, topArtists);
-      return response.json(savedArtists);
-    } catch (err) {
-      console.log("err", err);
-      throw err
-    }
+
+  constructor(private spotifyService: SpotifyService) {
   }
 
-  public async tracks({ response, auth }: HttpContextContract) {
-    try {
-      const userId = auth.user?.id;
-      const topTracks = await SpotifyService.getTracks(userId);
-      const mappdTracks = topTracks?.map((track) => {
-        return {
-          // image: track?.preview_url,
-          // uri: track.uri,
-          popularity: track.popularity,
-          name: track.name,
-          trackId: track.id,
-          album: track?.albun?.name,
-          // artists: artists,
-        };
-      });
-      // const savedTracks = await SpotifyService.saveTracks(userId, topTracks);
-
-      return response.json(mappdTracks);
-    } catch (err) {
-      console.log("err", err);
-      throw err
-    }
+  public async artists({auth}: HttpContextContract) {
+    const user = await auth.authenticate();
+    const userId = user.id;
+    const topArtists = await this.spotifyService.getArtists(userId);
+    const savedArtists = await this.spotifyService.saveArtists(userId, topArtists);
+    return savedArtists;
   }
 
-  public async trackByName({request, response, auth}: HttpContextContract) {
-    try {
-      const userId = auth.user?.id;
-      const { name } = request.qs()
+  public async tracks({auth}: HttpContextContract) {
+    const user = await auth.authenticate();
+    const userId = user.id;
+    const topTracks = await this.spotifyService.getTracks(userId);
+    const mappdTracks = topTracks?.map((track) => {
+      return {
+        // image: track?.preview_url,
+        // uri: track.uri,
+        popularity: track.popularity,
+        name: track.name,
+        trackId: track.id,
+        album: track?.albun?.name,
+        // artists: artists,
+      };
+    });
+    // const savedTracks = await SpotifyService.saveTracks(userId, topTracks);
 
-      const tracks = await SpotifyService.getTracksByName(userId, name)
+    return mappdTracks;
+  }
 
-      const mappedTracks = tracks?.map((track) => {
-        return  {
-          uri: track.uri,
-          popularity: track.popularity,
-          name: track.name,
-          trackId: track.id,
-          album: track?.album?.name,
-        }
-      })
+  public async trackByName({request, auth}: HttpContextContract) {
+    const user = await auth.authenticate();
+    const userId = user.id;
+    const {name} = request.qs()
 
-      return response.json({
-        status: true,
-        data: mappedTracks
-      })
-    } catch(err) {
-      return response.json({
-        status: false,
-        message: "Error fetching track's"
-      })
+    const tracks = await this.spotifyService.getTracksByName(userId, name)
+
+    const mappedTracks = tracks?.map((track) => {
+      return {
+        uri: track.uri,
+        popularity: track.popularity,
+        name: track.name,
+        trackId: track.id,
+        album: track?.album?.name,
+      }
+    })
+
+    return {
+      status: true,
+      data: mappedTracks
     }
   }
 

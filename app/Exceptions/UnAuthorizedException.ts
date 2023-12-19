@@ -1,4 +1,5 @@
 import {HttpException} from "@adonisjs/http-server/build/src/Exceptions/HttpException";
+import {ErrorCode} from "App/Exceptions/ErrorCode";
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,6 @@ import {HttpException} from "@adonisjs/http-server/build/src/Exceptions/HttpExce
 */
 export default class UnAuthorizedException extends HttpException {
   constructor(message?: string, code?: string) {
-    super(message ?? "", 401, code)
+    super(message ?? ErrorCode.UN_AUTHORIZED, 401, code ?? ErrorCode.UN_AUTHORIZED)
   }
 }

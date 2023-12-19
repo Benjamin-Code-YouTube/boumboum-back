@@ -27,10 +27,10 @@ Route.group(() => {
 
   Route.group(() => {
     Route.get("/spotify", "AuthSpotifyController.authorize");
-    Route.post("/spotify/callback", "AuthSpotifyController.callback");
-    Route.post("/success", "AuthController.success");
+    Route.get("/spotify/callback", "AuthSpotifyController.callback");
+    Route.get("/success", "AuthController.success");
     Route.post("/logout", "AuthController.logout");
-  }).prefix(AuthMiddleware.buildMiddlewareName())
+  }).prefix("auth")
 
   Route.group(() => {
     Route.get("/", "ProfilesController.get");

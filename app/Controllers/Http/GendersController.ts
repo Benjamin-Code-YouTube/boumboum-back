@@ -1,21 +1,16 @@
-import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import type {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 
 import Gender from "App/Models/Gender";
+import {inject} from "@adonisjs/fold";
 
+@inject()
 export default class GendersController {
-  public async index({ response }: HttpContextContract) {
-    try {
-      const genders = await Gender.query();
-      return response.json({
-        status: true,
-        data: genders,
-        message: "Successfully fetched genders",
-      });
-    } catch (err) {
-      return response.json({
-        status: false,
-        message: "Something went wrong.",
-      });
-    }
+  public async index({}: HttpContextContract) {
+    const genders = await Gender.query();
+    return {
+      status: true,
+      data: genders,
+      message: "Successfully fetched genders",
+    };
   }
 }

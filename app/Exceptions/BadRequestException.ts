@@ -10,11 +10,11 @@ import {ErrorCode} from "App/Exceptions/ErrorCode";
 | a status code and error code for every exception.
 |
 | @example
-| new TechnicalException('message', 500, 'E_RUNTIME_EXCEPTION')
+| new UnAuthorizedException('message', 500, 'E_RUNTIME_EXCEPTION')
 |
 */
-export default class TechnicalException extends HttpException {
+export default class BadRequestException extends HttpException {
   constructor(message?: string, code?: string) {
-    super(message ?? ErrorCode.TECHNICAL_ERROR, 500, code ?? ErrorCode.TECHNICAL_ERROR)
+    super(message ?? ErrorCode.BAD_REQUEST, 400, code ?? ErrorCode.BAD_REQUEST)
   }
 }
