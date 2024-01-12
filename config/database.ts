@@ -7,7 +7,7 @@
 
 import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 import Env from '@ioc:Adonis/Core/Env'
-import ConfigurationService from "App/Services/ConfigurationService";
+import ConfigurationService from 'App/Services/ConfigurationService'
 
 export enum DatabaseConnectionName {
   MY_SQL = 'mysql',
@@ -54,7 +54,7 @@ const databaseConfig: DatabaseConfig = {
         ),
         user: Env.get('DATABASE_USER', 'root'),
         password: Env.get('DATABASE_PASSWORD', ''),
-        database: Env.get('DATABASE_NAME', 'music_matching'),
+        database: Env.get('DATABASE_NAME'),
       },
       migrations: {
         naturalSort: true,

@@ -30,7 +30,7 @@ export default Env.rules({
   DB_CONNECTION: Env.schema.enum.optional(Object.values(DatabaseConnectionName)),
   // main database
   DATABASE_HOST: Env.schema.string.optional({ format: 'host' }),
-  DATABASE_NAME: Env.schema.string.optional(),
+  DATABASE_NAME: Env.schema.string(),
   DATABASE_PASSWORD: Env.schema.string.optional(),
   DATABASE_PORT: Env.schema.number.optional(),
   DATABASE_USER: Env.schema.string.optional(),
