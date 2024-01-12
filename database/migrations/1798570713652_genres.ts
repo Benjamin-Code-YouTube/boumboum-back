@@ -1,14 +1,18 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-
+// "genres": [
+//   "pakistani indie",
+//   "pakistani pop",
+//   "urdu hip hop"
+// ],
 export default class extends BaseSchema {
-  protected tableName = 'genders'
+  protected tableName = 'genres'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.uuid('id').primary()
+      table.string('artist_id').references('id').inTable('artists').onDelete('CASCADE')
 
-      table.string('name', 255)
-      table.tinyint('status').defaultTo(1)
+      table.string('name')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -18,7 +22,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

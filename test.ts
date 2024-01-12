@@ -12,22 +12,23 @@
 |
 */
 
-import {NodeEnv} from "App/Services/ConfigurationService";
-import 'reflect-metadata'
-import sourceMapSupport from 'source-map-support'
-import {Ignitor} from '@adonisjs/core/build/standalone'
-import {configure, processCliArgs, run, RunnerHooksHandler} from '@japa/runner'
+import { NodeEnv } from 'App/Services/ConfigurationService'
 
 process.env.NODE_ENV = NodeEnv.TEST
 
-sourceMapSupport.install({handleUncaughtExceptions: false})
+import 'reflect-metadata'
+import sourceMapSupport from 'source-map-support'
+import { Ignitor } from '@adonisjs/core/build/standalone'
+import { configure, processCliArgs, run, RunnerHooksHandler } from '@japa/runner'
+
+sourceMapSupport.install({ handleUncaughtExceptions: false })
 
 const kernel = new Ignitor(__dirname).kernel('test')
 
 kernel
   .boot()
   .then(() => import('./tests/bootstrap'))
-  .then(({runnerHooks, ...config}) => {
+  .then(({ runnerHooks, ...config }) => {
     const app: RunnerHooksHandler[] = [() => kernel.start()]
 
     configure({
@@ -39,7 +40,7 @@ kernel
         setup: app.concat(runnerHooks.setup),
         teardown: runnerHooks.teardown,
       },
-      cwd: kernel.application.appRoot
+      cwd: kernel.application.appRoot,
     })
 
     run()

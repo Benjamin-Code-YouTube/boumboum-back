@@ -7,6 +7,10 @@
 
 import type { AuthConfig } from '@ioc:Adonis/Addons/Auth'
 
+export enum GuardName {
+  API = 'api',
+}
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Mapping
@@ -17,7 +21,7 @@ import type { AuthConfig } from '@ioc:Adonis/Addons/Auth'
 |
 */
 const authConfig: AuthConfig = {
-  guard: 'api',
+  guard: GuardName.API,
   guards: {
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +36,7 @@ const authConfig: AuthConfig = {
     | on cookies/sessions.
     |
     */
-    api: {
+    [GuardName.API]: {
       driver: 'oat',
 
       /*

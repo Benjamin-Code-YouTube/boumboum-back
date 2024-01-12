@@ -1,31 +1,20 @@
 import { DateTime } from 'luxon'
-import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
-import Track from './Track'
-import Artist from './Artist'
-import Profile from './Profile'
+import { column, BaseModel, hasOne, HasOne, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { v4 as uuid } from 'uuid'
+import { beforeCreate } from '@adonisjs/lucid/build/src/Orm/Decorators'
+import Profile from 'App/Models/Profile'
+import Track from 'App/Models/Track'
+import Artist from 'App/Models/Artist'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
-
-  @column()
-  public name: string
-
-  @column()
-  public provider: string
-
-  @column()
-  public access_token: string
+  public id: string
 
   @column()
   public email: string
 
-  @column({ serializeAs: null })
-  public password: string
-
   @column()
-  public rememberMeToken: string | null
+  public name: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -33,12 +22,10 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  // @beforeSave()
-  // public static async hashPassword (user: User) {
-  //   if (user.$dirty.password) {
-  //     user.password = await Hash.make(user.password)
-  //   }
-  // }
+  @beforeCreate()
+  public static async createUUID(user: User) {
+    user.id = uuid()
+  }
 
   @hasOne(() => Profile)
   public profile: HasOne<typeof Profile>
@@ -48,5 +35,4 @@ export default class User extends BaseModel {
 
   @hasMany(() => Artist)
   public artists: HasMany<typeof Artist>
-
 }

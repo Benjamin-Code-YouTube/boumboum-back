@@ -5,11 +5,13 @@
  * file.
  */
 
-import {driveConfig} from '@adonisjs/core/build/config'
+import { driveConfig } from '@adonisjs/core/build/config'
 import Application from '@ioc:Adonis/Core/Application'
-import ConfigurationService, {DriveDisk} from "App/Services/ConfigurationService";
+import Env from '@ioc:Adonis/Core/Env'
 
-const DISK_CONFIG = ConfigurationService.getDiskConfig()
+export enum DriveDiskName {
+  LOCAL = 'local',
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +32,7 @@ export default driveConfig({
   | the `DRIVE_DISK` environment variable.
   |
   */
-  disk: DISK_CONFIG.driveDisk,
+  disk: Env.get('DRIVE_DISK', DriveDiskName.LOCAL),
 
   disks: {
     /*
@@ -42,7 +44,7 @@ export default driveConfig({
     | files when not using this disk.
     |
     */
-    [DriveDisk.LOCAL]: {
+    [DriveDiskName.LOCAL]: {
       driver: 'local',
       visibility: 'public',
 
@@ -128,23 +130,23 @@ export default driveConfig({
     //   bucket: Env.get('GCS_BUCKET'),
 
     /*
-    |--------------------------------------------------------------------------
-    | Uniform ACL - Google cloud storage only
-    |--------------------------------------------------------------------------
-    |
-    | When using the Uniform ACL on the bucket, the "visibility" option is
-    | ignored. Since, the files ACL is managed by the google bucket policies
-    | directly.
-    |
-    |**************************************************************************
-    | Learn more: https://cloud.google.com/storage/docs/uniform-bucket-level-access
-    |**************************************************************************
-    |
-    | The following option just informs drive whether your bucket is using uniform
-    | ACL or not. The actual setting needs to be toggled within the Google cloud
-    | console.
-    |
-    */
+      |--------------------------------------------------------------------------
+      | Uniform ACL - Google cloud storage only
+      |--------------------------------------------------------------------------
+      |
+      | When using the Uniform ACL on the bucket, the "visibility" option is
+      | ignored. Since, the files ACL is managed by the google bucket policies
+      | directly.
+      |
+      |**************************************************************************
+      | Learn more: https://cloud.google.com/storage/docs/uniform-bucket-level-access
+      |**************************************************************************
+      |
+      | The following option just informs drive whether your bucket is using uniform
+      | ACL or not. The actual setting needs to be toggled within the Google cloud
+      | console.
+      |
+      */
     //   usingUniformAcl: false,
     // },
   },

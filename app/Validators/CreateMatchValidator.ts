@@ -25,7 +25,7 @@ export default class CreateMatchValidator {
    */
 
   public schema = schema.create({
-    userId: schema.number(),
+    userId: schema.string(),
   })
 
   /**

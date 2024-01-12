@@ -1,9 +1,17 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import User from 'App/Models/User'
+import { v4 as uuid } from 'uuid'
+import { beforeCreate } from '@adonisjs/lucid/build/src/Orm/Decorators'
 
 export default class Match extends BaseModel {
+  @beforeCreate()
+  public static async createUUID(match: Match) {
+    match.id = uuid()
+  }
+
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -12,13 +20,13 @@ export default class Match extends BaseModel {
   public updatedAt: DateTime
 
   @column()
-  public matcherUserId: Number
+  public matcherUserId: User['id']
 
   @column()
-  public matchedUserId: Number
+  public matchedUserId: User['id']
 
   @column()
-  public mutualMatch: Boolean
+  public mutualMatch: boolean
 
   @column()
   public matchDate: Date

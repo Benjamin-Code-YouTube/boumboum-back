@@ -1,5 +1,5 @@
-import {HttpException} from "@adonisjs/http-server/build/src/Exceptions/HttpException";
-import {ErrorCode} from "App/Exceptions/ErrorCode";
+import { HttpException } from '@adonisjs/http-server/build/src/Exceptions/HttpException'
+import { ErrorCode } from 'App/Exceptions/ErrorCode'
 
 /*
 |--------------------------------------------------------------------------

@@ -12,5 +12,5 @@ export default class ApiToken extends BaseModel {
   public updatedAt: DateTime
 
   @column()
-  public token: String
+  public token: string
 }

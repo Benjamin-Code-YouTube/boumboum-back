@@ -18,47 +18,37 @@
 |
 */
 
-import Route from "@ioc:Adonis/Core/Route";
-import AuthMiddleware from "App/Middleware/Auth";
+import Route from '@ioc:Adonis/Core/Route'
+import AuthMiddleware from 'App/Middleware/Auth'
 
 Route.get('health', ({ response }) => response.noContent())
 
 Route.group(() => {
+  Route.group(() => {
+    Route.get('/auth/spotify', 'authSpotify.controller.authorize')
+    Route.get('/auth/spotify/callback', 'authSpotify.controller.callback')
+    Route.get('/auth/success', 'auth.controller.success')
+    Route.post('/auth/logout', 'auth.controller.logout')
+  }).namespace('App/auth')
 
   Route.group(() => {
-    Route.get("/spotify", "AuthSpotifyController.authorize");
-    Route.get("/spotify/callback", "AuthSpotifyController.callback");
-    Route.get("/success", "AuthController.success");
-    Route.post("/logout", "AuthController.logout");
-  }).prefix("auth")
+    Route.get('/profile/', 'ProfilesController.get')
+    Route.post('/profile/', 'ProfilesController.store')
+  }).middleware(AuthMiddleware.buildMiddlewareName('api'))
 
   Route.group(() => {
-    Route.get("/", "ProfilesController.get");
-    Route.post("/", "ProfilesController.store");
-  })
-  .prefix("profile")
-  .middleware(AuthMiddleware.buildMiddlewareName("api"));
+    Route.get('/genders/', 'GendersController.getAll')
+  }).middleware(AuthMiddleware.buildMiddlewareName('api'))
 
   Route.group(() => {
-    Route.get("/", "GendersController.index");
-  })
-  .prefix("genders")
-  .middleware(AuthMiddleware.buildMiddlewareName("api"));
+    Route.get('/spotify/artists', 'SpotifyController.artists')
+    Route.get('/spotify/tracks', 'SpotifyController.tracks')
+    Route.get('/spotify/track-by-name', 'SpotifyController.trackByName')
+  }).middleware(AuthMiddleware.buildMiddlewareName('api'))
 
   Route.group(() => {
-    Route.get("/artists", "SpotifyController.artists");
-    Route.get("/tracks", "SpotifyController.tracks");
-    Route.get("/track-by-name", "SpotifyController.trackByName");
-  })
-  .prefix("spotify")
-  .middleware(AuthMiddleware.buildMiddlewareName("api"));
-
-  Route.group(() => {
-    Route.get("/", "MatchesController.get");
-    Route.post("/mutual", "MatchesController.mutualMatch");
-    Route.get("/history", "MatchesController.history");
-  })
-  .prefix("matches")
-  .middleware(AuthMiddleware.buildMiddlewareName("api"));
-
-}).prefix("api");
+    Route.get('/matches/', 'MatchesController.get')
+    Route.post('/matches/mutual', 'MatchesController.mutualMatch')
+    Route.get('/matches/history', 'MatchesController.history')
+  }).middleware(AuthMiddleware.buildMiddlewareName('api'))
+}).prefix('api')

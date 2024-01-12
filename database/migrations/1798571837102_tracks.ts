@@ -1,25 +1,21 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'artists'
+  protected tableName = 'tracks'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.uuid('id').primary()
 
-      table.integer('user_id')
-        .unsigned()
+      table.string('user_id').references('id').inTable('users').onDelete('CASCADE')
 
-
-      /* user => track || null */
-      table.string('type') 
- 
       table.string('name')
-      table.string('popularity')
-      table.string('followers')
       table.string('uri')
-      table.string('spotify_artist_id')
-      table.string('artist_image')
+      table.string('popularity')
+      table.string('tract_image')
+      table.string('track_id')
+      table.string('album')
+      table.tinyint('favorite').defaultTo(0)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -29,7 +25,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

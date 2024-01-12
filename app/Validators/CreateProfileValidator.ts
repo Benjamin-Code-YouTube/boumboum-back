@@ -30,8 +30,8 @@ export default class CreateProfileValidator {
     preferedGenderId: schema.number(),
     trackIds: schema.array().members(schema.string()),
     avatar: schema.file({
-      size: "5mb",
-      extnames: ["jpg", "png", "jpeg"],
+      size: '5mb',
+      extnames: ['jpg', 'png', 'jpeg'],
     }),
   })
 

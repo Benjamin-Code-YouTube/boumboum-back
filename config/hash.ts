@@ -5,8 +5,14 @@
  * file.
  */
 
-import {hashConfig} from '@adonisjs/core/build/config'
-import ConfigurationService, {HashDriverName} from "App/Services/ConfigurationService";
+import { hashConfig } from '@adonisjs/core/build/config'
+import Env from '@ioc:Adonis/Core/Env'
+
+export enum HashDriverName {
+  SCRYPT = 'scrypt',
+  ARGON = 'argon',
+  BCRYPT = 'bcrypt',
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +33,7 @@ export default hashConfig({
   | free to change the default value
   |
   */
-  default: ConfigurationService.getHashDriverName(),
+  default: Env.get('HASH_DRIVER', HashDriverName.SCRYPT),
 
   list: {
     /*

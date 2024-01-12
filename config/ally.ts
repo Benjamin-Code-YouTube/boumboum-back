@@ -5,11 +5,13 @@
  * file.
  */
 
-import {AllyConfig} from '@ioc:Adonis/Addons/Ally'
-import ConfigurationService from "App/Services/ConfigurationService";
+import { AllyConfig } from '@ioc:Adonis/Addons/Ally'
+import Env from '@ioc:Adonis/Core/Env'
 
+export enum OAuthProviderName {
+  SPOTIFY = 'spotify',
+}
 
-const SPOTIFY_CONFIG = ConfigurationService.getSpotifyConfig()
 /*
 |--------------------------------------------------------------------------
 | Ally Config
@@ -25,13 +27,16 @@ const allyConfig: AllyConfig = {
   | Spotify driver
   |--------------------------------------------------------------------------
   */
-  spotify: {
+  [OAuthProviderName.SPOTIFY]: {
     driver: 'spotify',
-    clientId: SPOTIFY_CONFIG.clientId,
-    clientSecret: SPOTIFY_CONFIG.clientSecret,
-    callbackUrl: SPOTIFY_CONFIG.callbackUrl,
-    scopes: SPOTIFY_CONFIG.scope,
-    showDialog: false
+    clientId: Env.get('SPOTIFY_CLIENT_ID'),
+    clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
+    callbackUrl: Env.get(
+      'SPOTIFY_CALLBACK_URL',
+      `${Env.get('BASE_API_URL')}/auth/spotify/callback`
+    ),
+    scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
+    showDialog: false,
   },
 }
 

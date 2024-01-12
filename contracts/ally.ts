@@ -6,10 +6,10 @@
  */
 
 declare module '@ioc:Adonis/Addons/Ally' {
-	interface SocialProviders {
+  interface SocialProviders {
     spotify: {
       config: SpotifyDriverConfig
       implementation: SpotifyDriverContract
     }
-	}
+  }
 }

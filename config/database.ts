@@ -5,10 +5,19 @@
  * file.
  */
 
-import type {DatabaseConfig} from '@ioc:Adonis/Lucid/Database'
-import ConfigurationService, {DatabaseConfiguration} from "App/Services/ConfigurationService";
+import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
+import Env from '@ioc:Adonis/Core/Env'
+import ConfigurationService from "App/Services/ConfigurationService";
 
-const DATABASE_CONFIG: DatabaseConfiguration = ConfigurationService.getDatabaseConfig()
+export enum DatabaseConnectionName {
+  MY_SQL = 'mysql',
+}
+
+enum DatabaseConnectionDefaultPort {
+  mysql = 3306,
+}
+
+Env.process()
 
 const databaseConfig: DatabaseConfig = {
   /*
@@ -21,7 +30,7 @@ const databaseConfig: DatabaseConfig = {
   | file.
   |
   */
-  connection: DATABASE_CONFIG.connection,
+  connection: Env.get('DB_CONNECTION', DatabaseConnectionName.MY_SQL),
 
   connections: {
     /*
@@ -35,23 +44,25 @@ const databaseConfig: DatabaseConfig = {
     | npm i mysql2
     |
     */
-    mysql: {
+    [DatabaseConnectionName.MY_SQL]: {
       client: 'mysql2',
       connection: {
-        host: DATABASE_CONFIG.host,
-        port: DATABASE_CONFIG.port,
-        user: DATABASE_CONFIG.user,
-        password: DATABASE_CONFIG.password,
-        database: DATABASE_CONFIG.name,
+        host: Env.get('DATABASE_HOST', '0.0.0.0'),
+        port: Env.get(
+          'DATABASE_PORT',
+          DatabaseConnectionDefaultPort[DatabaseConnectionName.MY_SQL]
+        ),
+        user: Env.get('DATABASE_USER', 'root'),
+        password: Env.get('DATABASE_PASSWORD', ''),
+        database: Env.get('DATABASE_NAME', 'music_matching'),
       },
       migrations: {
         naturalSort: true,
       },
       healthCheck: false,
-      debug: false,
+      debug: ConfigurationService.isServerInDevMode(),
     },
-
-  }
+  },
 }
 
 export default databaseConfig

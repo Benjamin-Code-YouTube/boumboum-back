@@ -1,10 +1,10 @@
-import type {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
-import {inject} from "@adonisjs/fold";
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { inject } from '@adonisjs/fold'
 
 @inject()
 export default class AuthController {
-  public async logout({auth}: HttpContextContract) {
-    await auth.use("api").revoke();
+  public async logout({ auth }: HttpContextContract) {
+    await auth.use('api').revoke()
     return {}
   }
 

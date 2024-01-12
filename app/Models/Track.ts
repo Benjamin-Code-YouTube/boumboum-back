@@ -1,10 +1,18 @@
 import { DateTime } from 'luxon'
 import { BaseModel, HasMany, column, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Artist from './Artist'
+import User from 'App/Models/User'
+import { beforeCreate } from '@adonisjs/lucid/build/src/Orm/Decorators'
+import { v4 as uuid } from 'uuid'
 
 export default class Track extends BaseModel {
+  @beforeCreate()
+  public static async createUUID(track: Track) {
+    track.id = uuid()
+  }
+
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -13,34 +21,29 @@ export default class Track extends BaseModel {
   public updatedAt: DateTime
 
   @column()
-  public userId: String
+  public userId: User['id']
 
   @column()
-  public uri: String
-  
-  @column()
-  public popularity: String
+  public uri: string
 
   @column()
-  public name: String
-
-  
-  @column()
-  public tractImage: String
-  
-  @column()
-  public trackId: String
-  
-  @column()
-  public album: String
-
+  public popularity: string
 
   @column()
-  public favorite: Number
+  public name: string
 
+  @column()
+  public tractImage: string
+
+  @column()
+  public trackId: Track['id']
+
+  @column()
+  public album: string
+
+  @column()
+  public favorite: number
 
   @hasMany(() => Artist)
   public artists: HasMany<typeof Artist>
-
-
 }
